@@ -7,6 +7,17 @@ function isExternal (path) {
   return /^(https?:|mailto:|tel:)/.test(path);
 }
 
+//判断是不是邮箱
+function isEmail(str) {
+  const string = str.replace(/\s|&nbsp;/g, ''); //先去除用户输入的无效字符
+  const reg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+  if (reg.test(string)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function isCellPhone (val) {
   if (!/^1(3|4|5|6|7|8)\d{9}$/.test(val)) {
     return false
@@ -40,9 +51,9 @@ function checkName (rule, value, callback){
 function checkPhone (rule, value, callback){
   // let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/;
   if (value == "") {
-    callback(new Error("请输入手机号"))
-  } else if (!isCellPhone(value)) {//引入methods中封装的检查手机格式的方法
-    callback(new Error("请输入正确的手机号!"))
+    callback(new Error("请输入邮箱"))
+  } else if (!isEmail(value)) {//引入methods中封装的检查手机格式的方法
+    callback(new Error("请输入正确的邮箱!"))
   } else {
     callback()
   }

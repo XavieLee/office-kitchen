@@ -25,7 +25,7 @@ public class AddressBook implements Serializable {
     private String consignee;
 
 
-    //手机号
+    //邮箱
     private String phone;
 
 

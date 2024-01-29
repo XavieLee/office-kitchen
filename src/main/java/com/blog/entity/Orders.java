@@ -50,7 +50,7 @@ public class Orders implements Serializable {
     //用户名
     private String userName;
 
-    //手机号
+    //邮箱
     private String phone;
 
     //地址

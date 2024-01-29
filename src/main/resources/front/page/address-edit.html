@@ -72,7 +72,7 @@
                         title:'新增收货地址',
                         form:{
                             consignee:'',//联系人
-                            phone:undefined,//手机号
+                            phone:undefined,//邮箱
                             sex:'1',//0表示女 1 表示男
                             detail:'',//收货地址
                             label:'公司',//标签
@@ -121,9 +121,9 @@
                             this.$notify({ type:'warning', message:'请输入收货地址'});
                             return 
                         }
-                        const reg = /^\d{8}$/
+                        const reg = /^\w+(-+.\w+)*@\w+(-.\w+)*.\w+(-.\w+)*$ /
                         if(!reg.test(form.phone)){
-                            this.$notify({ type:'warning', message:'电话不合法,请输入8位新加坡号码'});
+                            this.$notify({ type:'warning', message:'邮箱不合法,请输入正确的邮箱'});
                             return  
                         }
                         let res= {}

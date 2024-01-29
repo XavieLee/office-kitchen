@@ -22,7 +22,7 @@ public class User implements Serializable {
     private String name;
 
 
-    //手机号
+    //邮箱
     private String phone;
 
 

@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8089
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -10,10 +10,29 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  mail:
+    # 邮件服务器主机地址
+    host: smtp.gmail.com
+    # 邮件服务器端口号
+    port: 587
+    # 邮件发送方的电子邮件地址
+    username: LX724379330@GMAIL.COM
+    # 邮件发送方的密码或应用程序专用密码（如果启用了两步验证）
+    password: annmjzwchqcpdnmp
+    # 启用TLS加密
+    properties.mail:
+      smtp:
+        starttls.enable: true
+        # 验证邮件服务器的身份
+        auth: true
+        ssl.protocols: 'TLSv1.2'
+      # 邮件传输协议
+      transport.protocol: smtp
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-reggie:
-  path: upload_imgs/
+resource:
+  path: logistics/img
 

@@ -37,7 +37,7 @@
 13. 为提高 XX 信息页加载速度，基于 Spring Cache 注解 + Redis 实现对 XX 信息的自动缓存，大幅降低数据库压力的同时将接口响应耗时由 0.8s 减少至 50ms
 
 14. 为降低开发成本，使用 MyBatis Plus 框架自动生成业务的增删改查重复代码，并使用 LambdaQueryWrapper 实现更灵活地自定义查询。
-15. 为降低用户注册成本、保证用户真实性，二次封装 XX 云 SDK 接入短信服务，并通过 Redis 来集中缓存验证码，防止单手机号的重复发送。
+15. 为降低用户注册成本、保证用户真实性，二次封装 XX 云 SDK 接入短信服务，并通过 Redis 来集中缓存验证码，防止单邮箱的重复发送。
 16. 为提高数据库整体读写性能，配置 MySQL 主从同步，并使用 sharding-jdbc 实现业务无侵入的读写分离。
 17. 封装全局 Axios 请求实例，添加全局请求拦截和全局异常响应处理器，减少重复的状态码判断、提升项目可维护性。
 
@@ -579,12 +579,12 @@ function logoutApi(){
 </el-form-item>
 
 <el-form-item
-    label="手机号:"
+    label="邮箱:"
     prop="phone"
 >
     <el-input
     v-model="ruleForm.phone"
-    placeholder="请输入手机号"
+    placeholder="请输入邮箱"
     maxlength="20"
     />
 </el-form-item>
@@ -2671,7 +2671,7 @@ public class CommonController {
 reggie:
   path: E:\\reggie\\img\\
 ```
-- 使用 @Value(“${reggie.path}”)读取到配置文件中的动态转存位置
+- 使用 @Value(“${resource.path}”)读取到配置文件中的动态转存位置
 - 使用uuid方式重新生成文件名，避免文件名重复造成文件覆盖
 - 通过获取原文件名来截取文件后缀
 - 注意事项：我们需要先判断一下文件目录是否存在，如果不存在则先创建
@@ -2682,7 +2682,7 @@ reggie:
 @Slf4j
 public class CommonController {
 
-    @Value("${reggie.path}")
+    @Value("${resource.path}")
     private String basepath;
 
     @PostMapping("/upload")
@@ -3970,30 +3970,30 @@ public void removeWithDish(List<Long> ids) {
     - 使用短信验证码作为登录凭证，无需记忆密码
     - 安全
 - 登录流程:
-    - 输入手机号（邮箱） > 获取验证码 > 输入验证码 > 点击登录 > 登录成功
+    - 输入邮箱 > 获取验证码 > 输入验证码 > 点击登录 > 登录成功
 
 - 用户登录界面
 ![](https://pic1.imgdb.cn/item/6343d4fd16f2c2beb1e55161.jpg)
 
 {% note warning no-icon %}
-注意:通过手机（邮箱）验证码登录，手机号是区分不同用户的标识
+注意:通过手机（邮箱）验证码登录，邮箱是区分不同用户的标识
 {% endnote %}
 
 ## 数据模型
-这里的手机号也是varchar类型，所以我们就不用动它了，咱就用它存咱自己邮箱号就行（动手能力强的自己改一下也无所谓，大不了改出BUG再自己修）
+这里的邮箱也是varchar类型，所以我们就不用动它了，咱就用它存咱自己邮箱号就行（动手能力强的自己改一下也无所谓，大不了改出BUG再自己修）
 
 |   Field   |     Type     | Collation | Null | Key | Default |       Comment       |
 |:---------:|:------------:|:---------:|:----:|:---:|:-------:|:-------------------:|
 |     id    |    bigint    |   (NULL)  |  NO  | PRI |  (NULL) |         主键        |
 |    name   |  varchar(50) |  utf8_bin |  YES |     |  (NULL) |         姓名        |
-|   phone   | varchar(100) |  utf8_bin |  NO  |     |  (NULL) |        手机号       |
+|   phone   | varchar(100) |  utf8_bin |  NO  |     |  (NULL) |        邮箱       |
 |    sex    |  varchar(2)  |  utf8_bin |  YES |     |  (NULL) |         性别        |
 | id_number |  varchar(18) |  utf8_bin |  YES |     |  (NULL) |       身份证号      |
 |   avatar  | varchar(500) |  utf8_bin |  YES |     |  (NULL) |         头像        |
 |   status  |      int     |   (NULL)  |  YES |     |    0    | 状态 0:禁用，1:正常 |
 
 {% note warning no-icon %}
-- 手机号（邮箱）是区分不同用户的标识，在用户登录的时候判断所输入的手机号（邮箱）是否存储在表中
+- 邮箱（邮箱）是区分不同用户的标识，在用户登录的时候判断所输入的邮箱是否存储在表中
 - 如果不在表中，说明该用户为一个新的用户，将该用户自动保在user表中
 {% endnote %}
 
@@ -4016,7 +4016,7 @@ public class User implements Serializable {
     private String name;
 
 
-    //手机号
+    //邮箱
     private String phone;
 
 
@@ -4194,7 +4194,7 @@ if(request.getSession().getAttribute("user") != null){
 ## 发送验证码
 {% note warning no-icon %}
 这里需要我们重新导入一下前端资料，将`day06`中的`front`资源再导入一遍，因为部分代码进行了修改
-注意将login.html中判断手机号的正则表达式换成判断邮箱的正则表达式
+注意将login.html中判断邮箱的正则表达式换成判断邮箱的正则表达式
 直接copy这个就行了 `^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$`
 {% endnote %}
 
@@ -4300,7 +4300,7 @@ public Result<User> login(@RequestBody Map map, HttpSession session) {
 |    user_id    |    bigint    |       (NULL)       |  NO  |     |  (NULL) |     用户id     |
 |   consignee   |  varchar(50) |      utf8_bin      |  NO  |     |  (NULL) |     收货人     |
 |      sex      |    tinyint   |       (NULL)       |  NO  |     |  (NULL) | 性别 0 女 1 男 |
-|     phone     |  varchar(11) |      utf8_bin      |  NO  |     |  (NULL) |     手机号     |
+|     phone     |  varchar(11) |      utf8_bin      |  NO  |     |  (NULL) |     邮箱     |
 | province_code |  varchar(12) | utf8mb4_0900_ai_ci |  YES |     |  (NULL) |  省级区划编号  |
 | province_name |  varchar(32) | utf8mb4_0900_ai_ci |  YES |     |  (NULL) |    省级名称    |
 |   city_code   |  varchar(12) | utf8mb4_0900_ai_ci |  YES |     |  (NULL) |  市级区划编号  |
@@ -4344,7 +4344,7 @@ public class AddressBook implements Serializable {
     private String consignee;
 
 
-    //手机号
+    //邮箱
     private String phone;
 
 
@@ -4469,7 +4469,7 @@ public Result<List<AddressBook>> list(AddressBook addressBook) {
 ![](https://pic1.imgdb.cn/item/6345518c16f2c2beb176ebe5.jpg)
 
 - 修改前端代码
-这段代码是新增地址的前端代码，我们将其中的手机号全部替换成邮箱，判断手机号的正则也换成判断邮箱的正则，懒人就直接Copy我这段代码就好了
+这段代码是新增地址的前端代码，我们将其中的邮箱全部替换成邮箱，判断邮箱的正则也换成判断邮箱的正则，懒人就直接Copy我这段代码就好了
 ``` HTML
 <!DOCTYPE html>
 <html lang="en">
@@ -4545,7 +4545,7 @@ public Result<List<AddressBook>> list(AddressBook addressBook) {
                         title:'新增收货地址',
                         form:{
                             consignee:'',//联系人
-                            phone:undefined,//手机号
+                            phone:undefined,//邮箱
                             sex:'1',//0表示女 1 表示男
                             detail:'',//收货地址
                             label:'公司',//标签
@@ -5124,7 +5124,7 @@ public Result<String> clean() {
 |    pay_method   |      int      |   (NULL)  |  NO  |     |    1    |                支付方式 1微信,2支付宝                |
 |      amount     | decimal(10,2) |   (NULL)  |  NO  |     |  (NULL) |                       实收金额                       |
 |      remark     |  varchar(100) |  utf8_bin |  YES |     |  (NULL) |                         备注                         |
-|      phone      |  varchar(255) |  utf8_bin |  YES |     |  (NULL) |                        手机号                         |
+|      phone      |  varchar(255) |  utf8_bin |  YES |     |  (NULL) |                        邮箱                         |
 |     address     |  varchar(255) |  utf8_bin |  YES |     |  (NULL) |                         地址                          |
 |    user_name    |  varchar(255) |  utf8_bin |  YES |     |  (NULL) |                          用户名                      |
 |    consignee    |  varchar(255) |  utf8_bin |  YES |     |  (NULL) |                          收货人                      |
@@ -5199,7 +5199,7 @@ public class Orders implements Serializable {
     //用户名
     private String userName;
 
-    //手机号
+    //邮箱
     private String phone;
 
     //地址
