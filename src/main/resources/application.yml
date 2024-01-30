@@ -35,4 +35,6 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 resource:
   path: logistics/img
+logging:
+  config: classpath:logback.xml
 

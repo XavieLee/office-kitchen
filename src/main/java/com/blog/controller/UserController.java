@@ -41,7 +41,7 @@ public class UserController {
             emailService.sendHtmlMail(phone, "您本次的验证码是: " + code,
                     "尊敬的用户,您好:<br/>"
                             + "<br/>本次请求的邮件验证码为: " + code + " ,本验证码 5 分钟内效，请及时输入。（请勿泄露此验证码）<br/>"
-                            + "<br/>如非本人操作，请忽略该邮件。<br/>(这是一封通过自动发送的邮件，请不要直接回复"
+                            + "<br/>如非本人操作，请忽略该邮件。<br/>(这是一封系统自动发送的邮件，请不要直接回复)"
             );
             //验证码存session，方便后面拿出来比对
             session.setAttribute(phone, code);
